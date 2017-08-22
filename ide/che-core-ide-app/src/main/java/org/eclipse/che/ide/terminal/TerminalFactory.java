@@ -25,7 +25,8 @@ public interface TerminalFactory {
    * Creates terminal for current machine.
    *
    * @param machine machine for which terminal will be created
+   * @param creationContext creation terminal context. @see {@link TerminalCreationContext}
    * @return an instance of {@link TerminalPresenter}
    */
-  TerminalPresenter create(@NotNull @Assisted MachineEntity machine, Object source);
+  TerminalPresenter create(@NotNull @Assisted MachineEntity machine, TerminalCreationContext creationContext);
 }

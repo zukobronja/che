@@ -11,6 +11,7 @@
 package org.eclipse.che.ide.processes.panel;
 
 import static org.eclipse.che.ide.processes.ProcessTreeNode.ProcessNodeType.MACHINE_NODE;
+import static org.eclipse.che.ide.terminal.TerminalCreationContext.CLICK_HANDLER;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
@@ -107,7 +108,7 @@ public class ProcessesPanelViewImpl extends BaseView<ProcessesPanelView.ActionDe
     processWidgets = new HashMap<>();
     widget2TreeNodes = new HashMap<>();
 
-    renderer.addAddTerminalClickHandler(machineId -> delegate.onAddTerminal(machineId, this));
+    renderer.addAddTerminalClickHandler(machineId -> delegate.onAddTerminal(machineId, CLICK_HANDLER));
     renderer.addPreviewSshClickHandler(machineId -> delegate.onPreviewSsh(machineId));
     renderer.addStopProcessHandler(
         new StopProcessHandler() {

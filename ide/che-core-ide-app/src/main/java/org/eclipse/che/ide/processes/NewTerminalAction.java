@@ -10,6 +10,7 @@
  */
 package org.eclipse.che.ide.processes;
 
+import static org.eclipse.che.ide.terminal.TerminalCreationContext.ACTION;
 import static org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspective.PROJECT_PERSPECTIVE_ID;
 
 import com.google.inject.Inject;
@@ -79,7 +80,7 @@ public class NewTerminalAction extends AbstractPerspectiveAction
 
   @Override
   public void actionPerformed(ActionEvent event) {
-    processesPanelPresenter.newTerminal(this);
+    processesPanelPresenter.newTerminal(ACTION);
   }
 
   @Override

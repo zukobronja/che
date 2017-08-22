@@ -23,6 +23,7 @@ import static org.eclipse.che.ide.processes.ProcessTreeNode.ProcessNodeType.COMM
 import static org.eclipse.che.ide.processes.ProcessTreeNode.ProcessNodeType.MACHINE_NODE;
 import static org.eclipse.che.ide.processes.ProcessTreeNode.ProcessNodeType.ROOT_NODE;
 import static org.eclipse.che.ide.processes.ProcessTreeNode.ProcessNodeType.TERMINAL_NODE;
+import static org.eclipse.che.ide.terminal.TerminalCreationContext.START_WORKSPACE;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -97,6 +98,7 @@ import org.eclipse.che.ide.processes.ProcessTreeNode;
 import org.eclipse.che.ide.processes.ProcessTreeNodeSelectedEvent;
 import org.eclipse.che.ide.processes.actions.ConsoleTreeContextMenu;
 import org.eclipse.che.ide.processes.actions.ConsoleTreeContextMenuFactory;
+import org.eclipse.che.ide.terminal.TerminalCreationContext;
 import org.eclipse.che.ide.terminal.TerminalFactory;
 import org.eclipse.che.ide.terminal.TerminalPresenter;
 import org.eclipse.che.ide.ui.loaders.DownloadWorkspaceOutputEvent;
@@ -363,11 +365,11 @@ public class ProcessesPanelPresenter extends BasePresenter
   }
 
   /** Opens new terminal for the selected machine. */
-  public void newTerminal(Object source) {
+  public void newTerminal(TerminalCreationContext termCreationContext) {
     final ProcessTreeNode selectedTreeNode = view.getSelectedTreeNode();
     final MachineEntity devMachine = appContext.getDevMachine();
     if (selectedTreeNode == null && devMachine != null) {
-      onAddTerminal(devMachine.getId(), source);
+      onAddTerminal(devMachine.getId(), termCreationContext);
       return;
     }
 
@@ -380,14 +382,14 @@ public class ProcessesPanelPresenter extends BasePresenter
 
     if (selectedTreeNode.getType() == MACHINE_NODE) {
       MachineEntity machine = (MachineEntity) selectedTreeNode.getData();
-      onAddTerminal(machine.getId(), source);
+      onAddTerminal(machine.getId(), termCreationContext);
       return;
     }
 
     ProcessTreeNode parent = selectedTreeNode.getParent();
     if (parent != null && parent.getType() == MACHINE_NODE) {
       MachineEntity machine = (MachineEntity) parent.getData();
-      onAddTerminal(machine.getId(), source);
+      onAddTerminal(machine.getId(), termCreationContext);
     }
   }
 
@@ -429,7 +431,7 @@ public class ProcessesPanelPresenter extends BasePresenter
    * @param machineId id of machine in which the terminal will be added
    */
   @Override
-  public void onAddTerminal(final String machineId, Object source) {
+  public void onAddTerminal(final String machineId, TerminalCreationContext termCreationContext) {
     final MachineEntity machine = getMachine(machineId);
     if (machine == null) {
       notificationManager.notify(
@@ -442,7 +444,7 @@ public class ProcessesPanelPresenter extends BasePresenter
     }
 
     final ProcessTreeNode machineTreeNode = provideMachineNode(machine, false);
-    final TerminalPresenter newTerminal = terminalFactory.create(machine, source);
+    final TerminalPresenter newTerminal = terminalFactory.create(machine, termCreationContext);
     final IsWidget terminalWidget = newTerminal.getView();
     final String terminalName = getUniqueTerminalName(machineTreeNode);
     final ProcessTreeNode terminalNode =
@@ -1057,7 +1059,7 @@ public class ProcessesPanelPresenter extends BasePresenter
     }
 
     selectDevMachine();
-    newTerminal(this);
+    newTerminal(START_WORKSPACE);
   }
 
   private void restoreState(final MachineEntity machine) {

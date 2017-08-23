@@ -10,8 +10,8 @@
  */
 package org.eclipse.che.ide.processes;
 
+import static org.eclipse.che.ide.terminal.TerminalCreationContext.ACTION;
 import static org.mockito.Answers.RETURNS_DEEP_STUBS;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
 import com.google.gwtmockito.GwtMockitoTestRunner;
@@ -49,6 +49,6 @@ public class NewTerminalActionTest {
   public void actionShouldBePerformed() throws Exception {
     action.actionPerformed(actionEvent);
 
-    verify(processesPanelPresenter).newTerminal(eq(action));
+    verify(processesPanelPresenter).newTerminal(ACTION);
   }
 }

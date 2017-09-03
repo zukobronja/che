@@ -15,10 +15,9 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ResizeLayoutPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
+import org.eclipse.che.ide.util.loging.Log;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -26,7 +25,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author Dmitry Shnurenko
  */
-final class TerminalViewImpl extends Composite implements TerminalView {
+final class TerminalViewImpl extends Composite implements TerminalView, Focusable {
 
   interface TerminalViewImplUiBinder extends UiBinder<Widget, TerminalViewImpl> {}
 
@@ -105,5 +104,36 @@ final class TerminalViewImpl extends Composite implements TerminalView {
     }
 
     delegate.setTerminalSize(x, y);
+  }
+
+  @Override
+  public int getTabIndex() {
+    return 0;
+  }
+
+  @Override
+  public void setAccessKey(char key) {
+
+  }
+
+  @Override
+  public void setFocus(boolean focused) {
+    if (focused) {
+      Log.info(getClass(), "FOCUS" + focused);
+      new Timer() {
+        @Override
+        public void run() {
+          terminal.focus();
+        }
+      }.schedule(100);
+    } else {
+//      Log.info(getClass(), "FOCUS" + focused);
+//      terminal.blur();
+    }
+  }
+
+  @Override
+  public void setTabIndex(int index) {
+
   }
 }

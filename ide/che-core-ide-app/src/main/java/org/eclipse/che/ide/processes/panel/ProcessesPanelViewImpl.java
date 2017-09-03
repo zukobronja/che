@@ -47,10 +47,12 @@ import org.eclipse.che.ide.processes.StopProcessHandler;
 import org.eclipse.che.ide.ui.multisplitpanel.SubPanel;
 import org.eclipse.che.ide.ui.multisplitpanel.SubPanelFactory;
 import org.eclipse.che.ide.ui.multisplitpanel.WidgetToShow;
+import org.eclipse.che.ide.ui.multisplitpanel.panel.SubPanelPresenter;
 import org.eclipse.che.ide.ui.tree.SelectionModel;
 import org.eclipse.che.ide.ui.tree.Tree;
 import org.eclipse.che.ide.ui.tree.TreeNodeElement;
 import org.eclipse.che.ide.util.input.SignalEvent;
+import org.eclipse.che.ide.util.loging.Log;
 import org.vectomatic.dom.svg.ui.SVGResource;
 
 /**
@@ -85,6 +87,7 @@ public class ProcessesPanelViewImpl extends BaseView<ProcessesPanelView.ActionDe
 
   private String activeProcessId = "";
 
+  //todo
   private Focusable lastFosuced;
 
   private boolean navigationPanelVisible;
@@ -158,6 +161,7 @@ public class ProcessesPanelViewImpl extends BaseView<ProcessesPanelView.ActionDe
 
           @Override
           public void onNodeSelected(TreeNodeElement<ProcessTreeNode> node, SignalEvent event) {
+            Log.info(getClass(), "Node selected " + node.getId());
             delegate.onTreeNodeSelected(node.getData());
           }
 
@@ -323,6 +327,7 @@ public class ProcessesPanelViewImpl extends BaseView<ProcessesPanelView.ActionDe
             new Scheduler.ScheduledCommand() {
               @Override
               public void execute() {
+                Log.info(getClass(), "on node selected from Select node method");
                 delegate.onTreeNodeSelected(node);
               }
             });
@@ -424,7 +429,8 @@ public class ProcessesPanelViewImpl extends BaseView<ProcessesPanelView.ActionDe
     final WidgetToShow widgetToShow = processWidgets.get(processId);
     final SubPanel subPanel = widget2Panels.get(widgetToShow);
     if (subPanel != null) {
-      subPanel.activateWidget(widgetToShow);
+      subPanel.activateWidget(widgetToShow);//todo
+      focusGained(subPanel, widgetToShow.getWidget());
     }
 
     activeProcessId = processId;
@@ -480,11 +486,7 @@ public class ProcessesPanelViewImpl extends BaseView<ProcessesPanelView.ActionDe
   public void focusGained(SubPanel subPanel, IsWidget widget) {
     focusedSubPanel = subPanel;
 
-    final ProcessTreeNode processTreeNode = widget2TreeNodes.get(widget);
-    if (processTreeNode != null) {
-      selectNode(processTreeNode);
-    }
-
+    Log.info(getClass(), "Focus gained!!!");
     if (lastFosuced != null && !lastFosuced.equals(widget)) {
       lastFosuced.setFocus(false);
     }

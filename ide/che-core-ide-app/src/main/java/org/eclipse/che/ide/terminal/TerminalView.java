@@ -23,6 +23,7 @@ import org.eclipse.che.ide.api.mvp.View;
 interface TerminalView extends View<TerminalView.ActionDelegate> {
 
   interface ActionDelegate {
+    /** Set terminal size */
     void setTerminalSize(int x, int y);
   }
 

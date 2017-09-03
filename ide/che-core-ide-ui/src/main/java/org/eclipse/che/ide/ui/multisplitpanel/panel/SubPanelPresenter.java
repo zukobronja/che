@@ -10,6 +10,7 @@
  */
 package org.eclipse.che.ide.ui.multisplitpanel.panel;
 
+import com.google.gwt.user.client.ui.Focusable;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
@@ -25,6 +26,7 @@ import org.eclipse.che.ide.ui.multisplitpanel.actions.ClosePaneAction;
 import org.eclipse.che.ide.ui.multisplitpanel.actions.RemoveAllWidgetsInPaneAction;
 import org.eclipse.che.ide.ui.multisplitpanel.actions.SplitHorizontallyAction;
 import org.eclipse.che.ide.ui.multisplitpanel.actions.SplitVerticallyAction;
+import org.eclipse.che.ide.util.loging.Log;
 
 /**
  * Presenter for {@link SubPanel}.
@@ -149,6 +151,7 @@ public class SubPanelPresenter implements SubPanel, SubPanelView.ActionDelegate 
 
   @Override
   public void onWidgetFocused(IsWidget widget) {
+    Log.info(getClass(), "onWidget focused");
     focusListener.focusGained(this, widget);
   }
 

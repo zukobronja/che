@@ -43,6 +43,7 @@ import org.eclipse.che.ide.ui.multisplitpanel.menu.MenuItemActionWidget;
 import org.eclipse.che.ide.ui.multisplitpanel.menu.MenuItemWidget;
 import org.eclipse.che.ide.ui.multisplitpanel.tab.Tab;
 import org.eclipse.che.ide.ui.multisplitpanel.tab.TabItemFactory;
+import org.eclipse.che.ide.util.loging.Log;
 
 /**
  * Implementation of {@link SubPanelView}.
@@ -107,7 +108,11 @@ public class SubPanelViewImpl extends Composite
 
     widgetsPanel.ensureDebugId("process-output-panel-holder");
     widgetsPanel.addDomHandler(
-        event -> delegate.onWidgetFocused(widgetsPanel.getVisibleWidget()), ClickEvent.getType());
+        event -> {
+          delegate.onWidgetFocused(widgetsPanel.getVisibleWidget());
+          Log.info(getClass(), "Click handler on the panel");
+        }, ClickEvent.getType()
+  );
   }
 
   @Override
@@ -303,6 +308,7 @@ public class SubPanelViewImpl extends Composite
 
   @Override
   public void onTabClicked(Tab tab) {
+    Log.info(getClass(), "Tab clicked");
     final WidgetToShow widget = tabs2Widgets.get(tab);
     if (widget != null) {
       activateWidget(widget);

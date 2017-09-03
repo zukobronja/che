@@ -559,6 +559,7 @@ public class ProcessesPanelPresenter extends BasePresenter
         view.showProcessOutput(node.getName());
       } else {
         view.showProcessOutput(node.getId());
+        Log.info(getClass(), "show output ****" + node.getId());
         refreshStopButtonState(node.getId());
       }
     }

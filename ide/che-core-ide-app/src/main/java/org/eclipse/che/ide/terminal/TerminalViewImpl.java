@@ -10,12 +10,21 @@
  */
 package org.eclipse.che.ide.terminal;
 
+import elemental.client.Browser;
+import elemental.dom.Node;
+import elemental.ranges.Range;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Focusable;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
+
 import org.eclipse.che.ide.util.loging.Log;
 
 import javax.validation.constraints.NotNull;
@@ -118,8 +127,26 @@ final class TerminalViewImpl extends Composite implements TerminalView, Focusabl
 
   @Override
   public void setFocus(boolean focused) {
+    if (terminal == null || terminal.getRowContainer() == null) { // getElement ===  null instead off
+      return;
+    } else {
+      Log.info(getClass(), "we have row container to get selection");
+    }
+
+    Range range = Browser.getDocument().getSelection().getRangeAt(0);
+
+    Log.info(getClass(), "---------------------Anchor-------------------");
+    Log.info(getClass(), Browser.getDocument().getSelection().getBaseNode());
+    Log.info(getClass(), "---------------------Anchor-------------------");
+    Range copyRange = range.cloneRange();
+
+    copyRange.selectNodeContents((Node)terminal.getRowContainer());
+    copyRange.setEnd(range.getStartContainer(), range.getStartOffset());
+    Log.info(getClass(), copyRange.toString().length() + " *** " + (copyRange.toString().length() + range.toString().length()));
+
     if (focused) {
       Log.info(getClass(), "FOCUS" + focused);
+
       new Timer() {
         @Override
         public void run() {

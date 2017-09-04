@@ -31,6 +31,7 @@ public class CustomKeyDownTerminalHandler extends JavaScriptObject {
                     return false;
                 }
 
+                //todo selection should be checked only for scope terminal domes, not in the scope of the all html document. CRATE ISSUE FOR THAT
                 var selection = this.document.getSelection(),
                     collapsed = selection.isCollapsed,
                     isRange = typeof collapsed === 'boolean' ? !collapsed : selection.type === 'Range';
@@ -39,6 +40,7 @@ public class CustomKeyDownTerminalHandler extends JavaScriptObject {
                 if (ev.keyCode === C && isRange) {
                     return false;
                 }
+                // todo run focus to hide selection after hotkey ctrl + c. CREATE ISSUE on that.
             }
         }
     }-*/;

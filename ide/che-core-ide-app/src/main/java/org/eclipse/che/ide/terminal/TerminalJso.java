@@ -63,23 +63,24 @@ class TerminalJso extends JavaScriptObject {
     }-*/;
 
   public final native void focus() /*-{
-    console.log(this.document.activeElement);
-    console.log(this.textarea);
-    console.log(this.document.activeElement === this.textarea);
-
-      var selection = this.document.getSelection(),
-          collapsed = selection.isCollapsed,
-          isRange = typeof collapsed === 'boolean' ? !collapsed : selection.type === 'Range';
-      var selectionLength = this.rowContainer.selectionEnd - this.rowContainer.selectionStart;
-      console.log(selectionLength);
+//    console.log(this.document.activeElement);
+//    console.log(this.textarea);
+//    console.log(this.document.activeElement === this.textarea);
+//
+//      var selection = this.document.getSelection(),
+//          collapsed = selection.isCollapsed,
+//          isRange = typeof collapsed === 'boolean' ? !collapsed : selection.type === 'Range';
+//      var selectionLength = this.rowContainer.selectionEnd - this.rowContainer.selectionStart;
+//      console.log(selectionLength);
 
 //     console.log(isRange);
-     console.log("focus");
+     console.log("focus***************");
     // Don't call focus if terminal had already focused to prevent losing selection in the terminal
 
-        if (!isRange && this.document.activeElement !== this.textarea) {
+//        if (!isRange && this.document.activeElement !== this.textarea) {
+//        if (this.document.activeElement !== this.textarea) {
             this.focus();
-        }
+//        }
     }-*/;
 
   public final native void blur() /*-{

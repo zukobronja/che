@@ -133,29 +133,26 @@ final class TerminalViewImpl extends Composite implements TerminalView, Focusabl
       Log.info(getClass(), "we have row container to get selection");
     }
 
-    Range range = Browser.getDocument().getSelection().getRangeAt(0);
+    int rangeCount = Browser.getDocument().getSelection().getRangeCount();
+    int selectionLength  = 0;
+    if (rangeCount > 0) {
+      Range range = Browser.getDocument().getSelection().getRangeAt(0);
+      Range cloneRange = range.cloneRange();
+      cloneRange.selectNodeContents((Node)terminal.getRowContainer());
+      cloneRange.setEnd(range.getStartContainer(), range.getStartOffset());
+      Log.info(getClass(), cloneRange.toString().length() + " *** " + (cloneRange.toString().length() + range.toString().length()));
+      selectionLength = range.toString().length();
+      Log.info(getClass(), " selection length " + selectionLength);
+    }
 
-    Log.info(getClass(), "---------------------Anchor-------------------");
-    Log.info(getClass(), Browser.getDocument().getSelection().getBaseNode());
-    Log.info(getClass(), "---------------------Anchor-------------------");
-    Range copyRange = range.cloneRange();
-
-    copyRange.selectNodeContents((Node)terminal.getRowContainer());
-    copyRange.setEnd(range.getStartContainer(), range.getStartOffset());
-    Log.info(getClass(), copyRange.toString().length() + " *** " + (copyRange.toString().length() + range.toString().length()));
-
-    if (focused) {
+    if (focused && selectionLength == 0) {
       Log.info(getClass(), "FOCUS" + focused);
-
       new Timer() {
         @Override
         public void run() {
           terminal.focus();
         }
       }.schedule(100);
-    } else {
-//      Log.info(getClass(), "FOCUS" + focused);
-//      terminal.blur();
     }
   }
 

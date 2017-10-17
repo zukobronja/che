@@ -252,9 +252,9 @@ public class SeleniumWebDriver
     switch (browser) {
       case GOOGLE_CHROME:
         ChromeOptions options = new ChromeOptions();
-        options.addArguments(Arrays.asList("--no-sandbox","--dns-prefetch-disable"));
-//        options.addArguments("--no-sandbox");
-//        options.addArguments("--dns-prefetch-disable");
+        options.addArguments(Arrays.asList("--no-sandbox", "--dns-prefetch-disable"));
+        //        options.addArguments("--no-sandbox");
+        //        options.addArguments("--dns-prefetch-disable");
 
         capability = DesiredCapabilities.chrome();
         capability.setCapability(ChromeOptions.CAPABILITY, options);

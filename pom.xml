@@ -46,10 +46,7 @@
     </scm>
     <properties>
         <che.docs.version>6.0.0-M1-SNAPSHOT</che.docs.version>
-        <che.docs.version>6.0.0-M1-SNAPSHOT</che.docs.version>
         <che.lib.version>6.0.0-M1-SNAPSHOT</che.lib.version>
-        <che.lib.version>6.0.0-M1-SNAPSHOT</che.lib.version>
-        <che.version>6.0.0-M1-SNAPSHOT</che.version>
         <che.version>6.0.0-M1-SNAPSHOT</che.version>
         <com.google.guava.version>21.0</com.google.guava.version>
         <org.seleniumhq.selenium.version>3.6.0</org.seleniumhq.selenium.version>

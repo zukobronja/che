@@ -21,8 +21,8 @@ import javax.validation.constraints.NotNull;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.api.constraints.Constraints;
 import org.eclipse.che.ide.api.editor.EditorPartPresenter;
-import org.eclipse.che.ide.api.event.ActivePartChangedEvent;
-import org.eclipse.che.ide.api.event.ActivePartChangedHandler;
+import org.eclipse.che.ide.api.parts.ActivePartChangedEvent;
+import org.eclipse.che.ide.api.parts.ActivePartChangedHandler;
 import org.eclipse.che.ide.api.parts.EditorMultiPartStack;
 import org.eclipse.che.ide.api.parts.EditorMultiPartStackState;
 import org.eclipse.che.ide.api.parts.EditorPartStack;
@@ -144,13 +144,18 @@ public class EditorMultiPartStackPresenter
   }
 
   @Override
-  public void maximize() {
-    state = State.MAXIMIZED;
+  public void show() {
+    state = State.NORMAL;
   }
 
   @Override
-  public void collapse() {
-    state = State.COLLAPSED;
+  public void hide() {
+    state = State.HIDDEN;
+  }
+
+  @Override
+  public void maximize() {
+    state = State.MAXIMIZED;
   }
 
   @Override
@@ -167,9 +172,6 @@ public class EditorMultiPartStackPresenter
   public State getPartStackState() {
     return state;
   }
-
-  @Override
-  public void showPartMenu(int mouseX, int mouseY) {}
 
   /** {@inheritDoc} */
   @Override

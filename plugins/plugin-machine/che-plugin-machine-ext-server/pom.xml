@@ -38,14 +38,6 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.che.core</groupId>
-            <artifactId>che-core-api-machine</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.core</groupId>
-            <artifactId>che-core-api-machine-shared</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.core</groupId>
             <artifactId>che-core-api-model</artifactId>
         </dependency>
         <dependency>
@@ -58,15 +50,11 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.che.core</groupId>
-            <artifactId>che-core-api-workspace</artifactId>
+            <artifactId>che-core-api-workspace-shared</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.che.core</groupId>
-            <artifactId>che-core-commons-inject</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-docker-client</artifactId>
+            <groupId>org.eclipse.che.infrastructure.docker</groupId>
+            <artifactId>docker-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

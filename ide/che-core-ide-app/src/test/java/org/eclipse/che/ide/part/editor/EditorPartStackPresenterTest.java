@@ -40,6 +40,7 @@ import org.eclipse.che.api.workspace.shared.dto.ProjectConfigDto;
 import org.eclipse.che.ide.actions.EditorActions;
 import org.eclipse.che.ide.api.action.Action;
 import org.eclipse.che.ide.api.action.ActionManager;
+import org.eclipse.che.ide.api.action.BaseAction;
 import org.eclipse.che.ide.api.action.Presentation;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.editor.AbstractEditorPresenter;
@@ -47,7 +48,6 @@ import org.eclipse.che.ide.api.editor.EditorAgent;
 import org.eclipse.che.ide.api.editor.EditorInput;
 import org.eclipse.che.ide.api.editor.EditorPartPresenter;
 import org.eclipse.che.ide.api.editor.EditorWithErrors;
-import org.eclipse.che.ide.api.machine.DevMachine;
 import org.eclipse.che.ide.api.parts.EditorTab;
 import org.eclipse.che.ide.api.parts.PartPresenter;
 import org.eclipse.che.ide.api.parts.PartStackView.TabItem;
@@ -99,6 +99,7 @@ public class EditorPartStackPresenterTest {
   @Mock private CloseAllTabsPaneAction closeAllTabsPaneAction;
   @Mock private EditorPaneMenuItemFactory editorPaneMenuItemFactory;
   @Mock private EditorAgent editorAgent;
+  @Mock private AddEditorTabMenuFactory addEditorTabMenuFactory;
 
   //additional mocks
   @Mock private SplitHorizontallyAction splitHorizontallyAction;
@@ -147,7 +148,7 @@ public class EditorPartStackPresenterTest {
     when(partPresenter3.getEditorInput()).thenReturn(editorInput3);
     when(editorInput3.getFile()).thenReturn(file3);
 
-    when(presentationFactory.getPresentation(nullable(Action.class))).thenReturn(presentation);
+    when(presentationFactory.getPresentation(nullable(BaseAction.class))).thenReturn(presentation);
 
     when(eventBus.addHandler(any(), any())).thenReturn(handlerRegistration);
 
@@ -169,8 +170,6 @@ public class EditorPartStackPresenterTest {
     when(appContext.getWorkspaceRoot()).thenReturn(container);
     when(container.getFile(nullable(Path.class))).thenReturn(promise);
 
-    when(appContext.getDevMachine()).thenReturn(mock(DevMachine.class));
-
     presenter =
         new EditorPartStackPresenter(
             view,
@@ -186,7 +185,8 @@ public class EditorPartStackPresenterTest {
             actionManager,
             closePaneAction,
             closeAllTabsPaneAction,
-            editorAgent);
+            editorAgent,
+            addEditorTabMenuFactory);
 
     when(tabItemFactory.createEditorPartButton(partPresenter1, presenter)).thenReturn(editorTab1);
     when(tabItemFactory.createEditorPartButton(partPresenter2, presenter)).thenReturn(editorTab2);
@@ -198,7 +198,7 @@ public class EditorPartStackPresenterTest {
   public void constructorShouldBeVerified() {
     verify(view, times(2)).setDelegate(presenter);
     verify(view).addPaneMenuButton(editorPaneMenu);
-    verify(editorPaneMenuItemFactory, times(4)).createMenuItem(Matchers.<Action>anyObject());
+    verify(editorPaneMenuItemFactory, times(4)).createMenuItem(Matchers.<BaseAction>anyObject());
     verify(editorPaneMenu).addItem(Matchers.<PaneMenuActionItemWidget>anyObject(), eq(true));
     verify(editorPaneMenu, times(3)).addItem(Matchers.<PaneMenuActionItemWidget>anyObject());
   }
@@ -419,7 +419,7 @@ public class EditorPartStackPresenterTest {
 
   @Test
   public void onActionClickedTest() {
-    Action action = mock(Action.class);
+    Action action = mock(BaseAction.class);
     when(editorPaneActionMenuItem.getData()).thenReturn(action);
     presenter.addPart(partPresenter1);
     presenter.setActivePart(partPresenter1);

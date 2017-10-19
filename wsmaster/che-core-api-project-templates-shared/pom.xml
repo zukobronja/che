@@ -39,10 +39,6 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.che.core</groupId>
-            <artifactId>che-core-api-machine-shared</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.core</groupId>
             <artifactId>che-core-api-workspace-shared</artifactId>
         </dependency>
     </dependencies>
@@ -75,11 +71,6 @@
                     <dependency>
                         <groupId>${project.groupId}</groupId>
                         <artifactId>${project.artifactId}</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.eclipse.che.core</groupId>
-                        <artifactId>che-core-api-machine-shared</artifactId>
                         <version>${project.version}</version>
                     </dependency>
                     <dependency>

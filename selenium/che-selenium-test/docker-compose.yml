@@ -6,9 +6,8 @@ services:
     ports:
       - 4444:4444
     environment:
-      - GRID_TIMEOUT=900
-      - GRID_BROWSER_TIMEOUT=900
       - JAVA_OPTS=-Xms512m -Xmx1024m -Djava.security.egd=file:/dev/./urandom
+      - SE_OPTS=-browserTimeout 900 -timeout 900
       - GRID_CLEAN_UP_CYCLE=5000
     ulimits:
       nproc: 163840

@@ -8,24 +8,24 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.ide.ext.plugins.client;
+package org.eclipse.che.plugin.sdk.ide;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.multibindings.GinMultibinder;
 import org.eclipse.che.ide.api.command.CommandType;
 import org.eclipse.che.ide.api.extension.ExtensionGinModule;
+import org.eclipse.che.ide.api.project.type.wizard.ProjectWizardRegistrar;
 
-/**
- * GIN module for 'Che Plugins Development' extension.
- *
- * @author Artem Zatsarynnyi
- */
+/** GIN module for 'Che SDK' plugin. */
 @ExtensionGinModule
-public class PluginsGinModule extends AbstractGinModule {
+public class CheSDKGinModule extends AbstractGinModule {
+
   @Override
   protected void configure() {
-    GinMultibinder.newSetBinder(binder(), CommandType.class)
+    GinMultibinder.newSetBinder(binder(), ProjectWizardRegistrar.class)
         .addBinding()
-        .to(GwtCheCommandType.class);
+        .to(ChePluginProjectWizardRegistrar.class);
+
+    GinMultibinder.newSetBinder(binder(), CommandType.class).addBinding().to(SDMCommandType.class);
   }
 }

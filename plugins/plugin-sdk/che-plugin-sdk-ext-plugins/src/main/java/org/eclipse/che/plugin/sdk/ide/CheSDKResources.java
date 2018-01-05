@@ -8,17 +8,13 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.ide.ext.plugins.client;
+package org.eclipse.che.plugin.sdk.ide;
 
 import com.google.gwt.resources.client.ClientBundle;
 import org.vectomatic.dom.svg.ui.SVGResource;
 
-/**
- * Client resources.
- *
- * @author Artem Zatsarynnyi
- */
-public interface PluginsResources extends ClientBundle {
+/** Client bundle for 'Che SDK' plugin. */
+public interface CheSDKResources extends ClientBundle {
 
   @Source("images/gwt-che-command-type.svg")
   SVGResource gwtCheCommandType();

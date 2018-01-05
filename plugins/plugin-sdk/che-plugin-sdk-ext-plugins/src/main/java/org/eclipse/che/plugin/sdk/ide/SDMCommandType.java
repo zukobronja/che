@@ -8,7 +8,7 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.ide.ext.plugins.client;
+package org.eclipse.che.plugin.sdk.ide;
 
 import static java.util.Collections.emptyList;
 
@@ -20,20 +20,16 @@ import org.eclipse.che.ide.api.command.CommandType;
 import org.eclipse.che.ide.api.icon.Icon;
 import org.eclipse.che.ide.api.icon.IconRegistry;
 
-/**
- * 'GWT SDM for Che' command type.
- *
- * @author Artem Zatsarynnyi
- */
+/** 'GWT SDM for Che' command type. */
 @Singleton
-public class GwtCheCommandType implements CommandType {
+public class SDMCommandType implements CommandType {
 
   private static final String COMMAND_TEMPLATE =
       "mvn -f /projects/che gwt:codeserver -pl :che-ide-gwt-app -am -Pfast,sdm-in-che";
   private static final String ID = "gwt_sdm_che";
 
   @Inject
-  public GwtCheCommandType(PluginsResources resources, IconRegistry iconRegistry) {
+  public SDMCommandType(CheSDKResources resources, IconRegistry iconRegistry) {
 
     iconRegistry.registerIcon(new Icon("command.type." + ID, resources.gwtCheCommandType()));
   }

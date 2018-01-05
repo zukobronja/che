@@ -8,21 +8,18 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.ide.ext.plugins.client;
+package org.eclipse.che.plugin.sdk.server;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import org.eclipse.che.ide.api.extension.Extension;
+import javax.inject.Singleton;
+import org.eclipse.che.api.project.server.type.TransientMixin;
+import org.eclipse.che.plugin.sdk.shared.Constants;
 
-/**
- * Entry point for an extension that adds support to work with GWT SDM in Che projects.
- *
- * @author Artem Zatsarynnyi
- */
 @Singleton
-@Extension(title = "GWT support for Che", version = "1.0.0")
-public class GwtCheExtension {
+public class ChePluginProjectType extends TransientMixin {
 
   @Inject
-  public GwtCheExtension() {}
+  public ChePluginProjectType() {
+    super(Constants.CHE_PLUGIN_ID, Constants.CHE_PLUGIN_NAME);
+  }
 }

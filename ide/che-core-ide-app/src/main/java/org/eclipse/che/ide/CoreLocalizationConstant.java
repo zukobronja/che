@@ -1004,6 +1004,22 @@ public interface CoreLocalizationConstant extends Messages {
   @Key("macro.explorer.current.file.path.description")
   String macroExplorerCurrentFilePathDescription();
 
+  @Key("macro.window.location.host.description")
+  @DefaultMessage("Return current window location host (e.g 'localhost:8080')")
+  String macroWindowLocationHostDescription();
+
+  @Key("macro.window.location.hostname.description")
+  @DefaultMessage("Return current window location hostname (e.g 'localhost')")
+  String macroWindowLocationHostNameDescription();
+
+  @Key("macro.window.location.port.description")
+  @DefaultMessage("Return current window location port (e.g '8080')")
+  String macroWindowLocationPortDescription();
+
+  @Key("macro.window.location.protocol.description")
+  @DefaultMessage("Return current window location protocol (e.g 'http or https')")
+  String macroWindowLocationProtocolDescription();
+
   @Key("empty.state.no.projects")
   String emptyStateNoProjects();
 

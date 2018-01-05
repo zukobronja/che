@@ -72,7 +72,7 @@ public class PluginService {
       @ApiParam(value = "Path to resource") @PathParam("path") String path)
       throws NotFoundException, ForbiddenException, ServerException {
 
-    File file = new File(PluginRegistry.PLUGIN_PATH, pluginFQN + "/" + path);
+    File file = new File(registry.CHE_JS_PLUGIN_DIR, pluginFQN + "/" + path);
 
     InputStream inputStream;
     try {

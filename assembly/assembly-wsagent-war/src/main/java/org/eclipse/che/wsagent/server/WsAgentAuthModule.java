@@ -12,6 +12,7 @@ package org.eclipse.che.wsagent.server;
 
 import com.google.inject.AbstractModule;
 import org.eclipse.che.api.core.rest.HttpJsonRequestFactory;
+import org.eclipse.che.api.plugin.PluginService;
 import org.eclipse.che.commons.auth.token.ChainedTokenExtractor;
 import org.eclipse.che.commons.auth.token.RequestTokenExtractor;
 import org.eclipse.che.inject.DynaModule;
@@ -24,6 +25,7 @@ public class WsAgentAuthModule extends AbstractModule {
     if (Boolean.valueOf(System.getenv("CHE_AUTH_ENABLED"))) {
       configureMultiUserMode();
     }
+    bind(PluginService.class);
   }
 
   private void configureMultiUserMode() {

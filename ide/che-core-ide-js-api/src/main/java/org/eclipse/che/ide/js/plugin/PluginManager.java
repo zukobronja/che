@@ -11,6 +11,7 @@
 
 package org.eclipse.che.ide.js.plugin;
 
+import com.google.common.base.Strings;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import elemental.js.util.JsArrayOf;
 import elemental.json.JsonArray;
@@ -25,6 +26,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.PromiseProvider;
+import org.eclipse.che.ide.QueryParameters;
 import org.eclipse.che.ide.api.Disposable;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.theme.ThemeAgent;
@@ -50,7 +52,6 @@ public class PluginManager {
   private final PromiseProvider promiseProvider;
   private final JsonFactory jsonFactory;
   private final RequireJsLoader requireJs;
-  private final AppContext appContext;
   private final JsActionManager jsActionManager;
   private final ImageRegistryImpl imageRegistry;
   private final ThemeAgent themeAgent;
@@ -58,6 +59,7 @@ public class PluginManager {
   private final JsApi jsApi;
   private final List<PluginManifest> plugins = new ArrayList<>();
   private final Map<String, PluginContext> activePlugins = new HashMap<>();
+  private final String servicePath;
 
   @Inject
   public PluginManager(
@@ -69,18 +71,24 @@ public class PluginManager {
       JsActionManager jsActionManager,
       ImageRegistryImpl imageRegistry,
       ThemeAgent themeAgent,
+      QueryParameters queryParameters,
       AsyncRequestFactory asyncRequestFactory,
       JsApi jsApi) {
     this.client = client;
     this.promiseProvider = promiseProvider;
     this.jsonFactory = jsonFactory;
     this.requireJs = requireJs;
-    this.appContext = appContext;
     this.jsActionManager = jsActionManager;
     this.imageRegistry = imageRegistry;
     this.themeAgent = themeAgent;
     this.asyncRequestFactory = asyncRequestFactory;
     this.jsApi = jsApi;
+    String pluginServer = queryParameters.getByName("pluginServer");
+    if (Strings.isNullOrEmpty(pluginServer)) {
+      servicePath = appContext.getMasterApiEndpoint() + "/plugin/";
+    } else {
+      servicePath = pluginServer + "/plugin/";
+    }
   }
 
   public Promise<Void> loadPlugins() {
@@ -160,8 +168,7 @@ public class PluginManager {
           },
           config,
           new String[] {
-            appContext.getMasterApiEndpoint()
-                + "/plugin/"
+            servicePath
                 + pluginManifest.getPublisher()
                 + "."
                 + pluginManifest.getName()
@@ -177,8 +184,7 @@ public class PluginManager {
   }
 
   private String getPluginBaseUrl(PluginManifest pluginManifest) {
-    return appContext.getMasterApiEndpoint()
-        + "/plugin/"
+    return servicePath
         + pluginManifest.getPublisher()
         + "."
         + pluginManifest.getName()

@@ -15,10 +15,12 @@ import static org.eclipse.che.ide.MimeType.APPLICATION_JSON;
 import static org.eclipse.che.ide.rest.HTTPHeader.ACCEPT;
 import static org.eclipse.che.ide.rest.HTTPHeader.CONTENT_TYPE;
 
+import com.google.common.base.Strings;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.eclipse.che.api.promises.client.Promise;
+import org.eclipse.che.ide.QueryParameters;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.rest.AsyncRequestFactory;
 import org.eclipse.che.ide.rest.StringListUnmarshaller;
@@ -34,8 +36,16 @@ public class PluginServiceClient {
 
   @Inject
   public PluginServiceClient(
-      AppContext appContext, AsyncRequestFactory asyncRequestFactory, LoaderFactory loaderFactory) {
-    servicePath = appContext.getMasterApiEndpoint() + "/plugin";
+      AppContext appContext,
+      QueryParameters queryParameters,
+      AsyncRequestFactory asyncRequestFactory,
+      LoaderFactory loaderFactory) {
+    String pluginServer = queryParameters.getByName("pluginServer");
+    if (Strings.isNullOrEmpty(pluginServer)) {
+      servicePath = appContext.getMasterApiEndpoint() + "/plugin";
+    } else {
+      servicePath = pluginServer + "/plugin";
+    }
     this.asyncRequestFactory = asyncRequestFactory;
     this.loaderFactory = loaderFactory;
   }

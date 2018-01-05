@@ -65,6 +65,10 @@ public class MacroApiModule extends AbstractGinModule {
     macrosBinder.addBinding().to(CurrentProjectPathMacro.class);
     macrosBinder.addBinding().to(CurrentProjectEldestParentPathMacro.class);
     macrosBinder.addBinding().to(CurrentProjectRelativePathMacro.class);
+    macrosBinder.addBinding().to(WindowLocationHostMacro.class);
+    macrosBinder.addBinding().to(WindowLocationHostNameMacro.class);
+    macrosBinder.addBinding().to(WindowLocationPortMacro.class);
+    macrosBinder.addBinding().to(WindowLocationProtocolMacro.class);
 
     bind(ServerAddressMacroRegistrar.class).asEagerSingleton();
 

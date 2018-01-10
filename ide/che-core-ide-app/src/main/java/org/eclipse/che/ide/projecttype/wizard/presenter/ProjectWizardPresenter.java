@@ -242,11 +242,10 @@ public class ProjectWizardPresenter
           "WizardRegistrar for the project type " + projectType.getId() + " isn't registered.");
     }
 
-    List<Provider<? extends WizardPage<MutableProjectConfig>>> pageProviders =
-        wizardRegistrar.get().getWizardPages();
+    List<? extends WizardPage<MutableProjectConfig>> pages = wizardRegistrar.get().getWizardPages();
     final ProjectWizard projectWizard = createDefaultWizard(configDto, wizardMode);
-    for (Provider<? extends WizardPage<MutableProjectConfig>> provider : pageProviders) {
-      projectWizard.addPage(provider.get(), 1, false);
+    for (WizardPage<MutableProjectConfig> page : pages) {
+      projectWizard.addPage(page, 1, false);
     }
 
     wizardsCache.put(projectType, projectWizard);

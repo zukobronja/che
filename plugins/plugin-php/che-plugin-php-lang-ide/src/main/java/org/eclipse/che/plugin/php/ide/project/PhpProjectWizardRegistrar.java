@@ -10,7 +10,6 @@
  */
 package org.eclipse.che.plugin.php.ide.project;
 
-import com.google.inject.Provider;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -26,7 +25,7 @@ import org.eclipse.che.plugin.php.shared.Constants;
  */
 public class PhpProjectWizardRegistrar implements ProjectWizardRegistrar {
 
-  private final List<Provider<? extends WizardPage<MutableProjectConfig>>> wizardPages;
+  private final List<? extends WizardPage<MutableProjectConfig>> wizardPages;
 
   public PhpProjectWizardRegistrar() {
     wizardPages = new ArrayList<>();
@@ -43,7 +42,7 @@ public class PhpProjectWizardRegistrar implements ProjectWizardRegistrar {
   }
 
   @NotNull
-  public List<Provider<? extends WizardPage<MutableProjectConfig>>> getWizardPages() {
+  public List<? extends WizardPage<MutableProjectConfig>> getWizardPages() {
     return wizardPages;
   }
 }

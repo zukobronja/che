@@ -10,7 +10,6 @@
  */
 package org.eclipse.che.ide.projecttype;
 
-import com.google.inject.Provider;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -28,7 +27,7 @@ public class BlankProjectWizardRegistrar implements ProjectWizardRegistrar {
   public static final String BLANK_CATEGORY = "Blank";
   public static final String BLANK_ID = "blank";
 
-  private final List<Provider<? extends WizardPage<MutableProjectConfig>>> wizardPages;
+  private final List<? extends WizardPage<MutableProjectConfig>> wizardPages;
 
   public BlankProjectWizardRegistrar() {
     wizardPages = new ArrayList<>();
@@ -45,7 +44,7 @@ public class BlankProjectWizardRegistrar implements ProjectWizardRegistrar {
   }
 
   @NotNull
-  public List<Provider<? extends WizardPage<MutableProjectConfig>>> getWizardPages() {
+  public List<? extends WizardPage<MutableProjectConfig>> getWizardPages() {
     return wizardPages;
   }
 }

@@ -13,7 +13,6 @@ import static org.eclipse.che.plugin.composer.shared.Constants.COMPOSER_PROJECT_
 import static org.eclipse.che.plugin.php.shared.Constants.PHP_CATEGORY;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -28,10 +27,10 @@ import org.eclipse.che.ide.api.wizard.WizardPage;
  */
 public class ComposerProjectWizardRegistrar implements ProjectWizardRegistrar {
 
-  private final List<Provider<? extends WizardPage<MutableProjectConfig>>> wizardPages;
+  private final List<WizardPage<MutableProjectConfig>> wizardPages;
 
   @Inject
-  public ComposerProjectWizardRegistrar(Provider<ComposerPagePresenter> pagePresenter) {
+  public ComposerProjectWizardRegistrar(ComposerPagePresenter pagePresenter) {
     wizardPages = new ArrayList<>();
     wizardPages.add(pagePresenter);
   }
@@ -50,7 +49,7 @@ public class ComposerProjectWizardRegistrar implements ProjectWizardRegistrar {
 
   @Override
   @NotNull
-  public List<Provider<? extends WizardPage<MutableProjectConfig>>> getWizardPages() {
+  public List<? extends WizardPage<MutableProjectConfig>> getWizardPages() {
     return wizardPages;
   }
 }

@@ -10,7 +10,6 @@
  */
 package org.eclipse.che.ide.api.project.type.wizard;
 
-import com.google.inject.Provider;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.ide.api.project.MutableProjectConfig;
@@ -44,5 +43,5 @@ public interface ProjectWizardRegistrar {
   String getCategory();
 
   /** Returns pages that should be used in project wizard. */
-  List<Provider<? extends WizardPage<MutableProjectConfig>>> getWizardPages();
+  List<? extends WizardPage<MutableProjectConfig>> getWizardPages();
 }

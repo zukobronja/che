@@ -12,7 +12,6 @@ package org.eclipse.che.plugin.cpp.ide.project;
 
 import static org.eclipse.che.plugin.cpp.shared.Constants.C_PROJECT_TYPE_ID;
 
-import com.google.inject.Provider;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -28,7 +27,7 @@ import org.eclipse.che.plugin.cpp.ide.CppExtension;
  */
 public class CProjectWizardRegistrar implements ProjectWizardRegistrar {
 
-  private final List<Provider<? extends WizardPage<MutableProjectConfig>>> wizardPages;
+  private final List<? extends WizardPage<MutableProjectConfig>> wizardPages;
 
   public CProjectWizardRegistrar() {
     wizardPages = new ArrayList<>();
@@ -45,7 +44,7 @@ public class CProjectWizardRegistrar implements ProjectWizardRegistrar {
   }
 
   @NotNull
-  public List<Provider<? extends WizardPage<MutableProjectConfig>>> getWizardPages() {
+  public List<? extends WizardPage<MutableProjectConfig>> getWizardPages() {
     return wizardPages;
   }
 }

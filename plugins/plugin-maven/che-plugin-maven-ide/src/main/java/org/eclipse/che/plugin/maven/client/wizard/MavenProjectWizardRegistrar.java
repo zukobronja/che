@@ -14,7 +14,6 @@ import static org.eclipse.che.ide.ext.java.shared.Constants.JAVA_CATEGORY;
 import static org.eclipse.che.plugin.maven.shared.MavenAttributes.MAVEN_ID;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -28,10 +27,10 @@ import org.eclipse.che.ide.api.wizard.WizardPage;
  * @author Artem Zatsarynnyi
  */
 public class MavenProjectWizardRegistrar implements ProjectWizardRegistrar {
-  private final List<Provider<? extends WizardPage<MutableProjectConfig>>> wizardPages;
+  private final List<WizardPage<MutableProjectConfig>> wizardPages;
 
   @Inject
-  public MavenProjectWizardRegistrar(Provider<MavenPagePresenter> mavenPagePresenter) {
+  public MavenProjectWizardRegistrar(MavenPagePresenter mavenPagePresenter) {
     wizardPages = new ArrayList<>();
     wizardPages.add(mavenPagePresenter);
   }
@@ -47,7 +46,7 @@ public class MavenProjectWizardRegistrar implements ProjectWizardRegistrar {
   }
 
   @NotNull
-  public List<Provider<? extends WizardPage<MutableProjectConfig>>> getWizardPages() {
+  public List<? extends WizardPage<MutableProjectConfig>> getWizardPages() {
     return wizardPages;
   }
 }

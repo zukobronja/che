@@ -10,7 +10,6 @@
  */
 package org.eclipse.che.plugin.csharp.ide.project;
 
-import com.google.inject.Provider;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -27,7 +26,7 @@ import org.eclipse.che.plugin.csharp.shared.Constants;
  */
 public class CSharpProjectWizardRegistrar implements ProjectWizardRegistrar {
 
-  private final List<Provider<? extends WizardPage<MutableProjectConfig>>> wizardPages;
+  private final List<? extends WizardPage<MutableProjectConfig>> wizardPages;
 
   public CSharpProjectWizardRegistrar() {
     wizardPages = new ArrayList<>();
@@ -44,7 +43,7 @@ public class CSharpProjectWizardRegistrar implements ProjectWizardRegistrar {
   }
 
   @NotNull
-  public List<Provider<? extends WizardPage<MutableProjectConfig>>> getWizardPages() {
+  public List<? extends WizardPage<MutableProjectConfig>> getWizardPages() {
     return wizardPages;
   }
 }

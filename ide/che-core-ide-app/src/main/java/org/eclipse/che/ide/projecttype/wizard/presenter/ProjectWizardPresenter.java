@@ -10,6 +10,7 @@
  */
 package org.eclipse.che.ide.projecttype.wizard.presenter;
 
+import static com.google.common.collect.Lists.reverse;
 import static org.eclipse.che.ide.api.project.type.wizard.ProjectWizardMode.CREATE;
 import static org.eclipse.che.ide.api.project.type.wizard.ProjectWizardMode.IMPORT;
 import static org.eclipse.che.ide.api.project.type.wizard.ProjectWizardMode.UPDATE;
@@ -244,7 +245,7 @@ public class ProjectWizardPresenter
 
     List<? extends WizardPage<MutableProjectConfig>> pages = wizardRegistrar.get().getWizardPages();
     final ProjectWizard projectWizard = createDefaultWizard(configDto, wizardMode);
-    for (WizardPage<MutableProjectConfig> page : pages) {
+    for (WizardPage<MutableProjectConfig> page : reverse(pages)) {
       projectWizard.addPage(page, 1, false);
     }
 

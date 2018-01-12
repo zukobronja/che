@@ -24,3 +24,20 @@
     cursor:pointer;
     color: primaryButtonBackground;
 }
+
+.label {
+    position: relative;
+    line-height: 29px;
+    margin-left: 20px;
+    display: inline-block;
+}
+
+.field {
+    color: #dbdbdb;
+    border: 1px solid #191c1e;
+    border-radius: 1px;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.19) inset, 0px 1px 0px 0px rgba(223, 223, 223, 0.4);
+    font-size: 12px;
+    padding-left: 8px;
+    height: 20px;
+}

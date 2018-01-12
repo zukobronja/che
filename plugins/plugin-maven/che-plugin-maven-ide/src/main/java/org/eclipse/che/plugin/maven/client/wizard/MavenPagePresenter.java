@@ -16,15 +16,12 @@ import static org.eclipse.che.ide.api.project.type.wizard.ProjectWizardMode.CREA
 import static org.eclipse.che.ide.api.project.type.wizard.ProjectWizardMode.UPDATE;
 import static org.eclipse.che.ide.api.project.type.wizard.ProjectWizardRegistrar.WIZARD_MODE_KEY;
 import static org.eclipse.che.ide.ext.java.shared.Constants.SOURCE_FOLDER;
-import static org.eclipse.che.plugin.maven.shared.MavenAttributes.ARCHETYPE_ARTIFACT_ID_OPTION;
-import static org.eclipse.che.plugin.maven.shared.MavenAttributes.ARCHETYPE_GROUP_ID_OPTION;
-import static org.eclipse.che.plugin.maven.shared.MavenAttributes.ARCHETYPE_REPOSITORY_OPTION;
-import static org.eclipse.che.plugin.maven.shared.MavenAttributes.ARCHETYPE_VERSION_OPTION;
 import static org.eclipse.che.plugin.maven.shared.MavenAttributes.ARTIFACT_ID;
 import static org.eclipse.che.plugin.maven.shared.MavenAttributes.DEFAULT_PACKAGING;
 import static org.eclipse.che.plugin.maven.shared.MavenAttributes.DEFAULT_SOURCE_FOLDER;
 import static org.eclipse.che.plugin.maven.shared.MavenAttributes.DEFAULT_TEST_SOURCE_FOLDER;
 import static org.eclipse.che.plugin.maven.shared.MavenAttributes.DEFAULT_VERSION;
+import static org.eclipse.che.plugin.maven.shared.MavenAttributes.GENERATOR_OPTION;
 import static org.eclipse.che.plugin.maven.shared.MavenAttributes.GROUP_ID;
 import static org.eclipse.che.plugin.maven.shared.MavenAttributes.MAVEN_ID;
 import static org.eclipse.che.plugin.maven.shared.MavenAttributes.PACKAGING;
@@ -36,10 +33,10 @@ import static org.eclipse.che.plugin.maven.shared.MavenAttributes.VERSION;
 import com.google.common.base.Optional;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
+import java.util.Set;
 import org.eclipse.che.api.project.shared.dto.SourceEstimation;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.OperationException;
@@ -51,8 +48,6 @@ import org.eclipse.che.ide.api.resources.Container;
 import org.eclipse.che.ide.api.wizard.AbstractWizardPage;
 import org.eclipse.che.ide.ui.dialogs.DialogFactory;
 import org.eclipse.che.ide.util.loging.Log;
-import org.eclipse.che.plugin.maven.client.MavenArchetype;
-import org.eclipse.che.plugin.maven.client.MavenExtension;
 import org.eclipse.che.plugin.maven.client.MavenLocalizationConstant;
 
 /**
@@ -66,18 +61,23 @@ public class MavenPagePresenter extends AbstractWizardPage<MutableProjectConfig>
   private final DialogFactory dialogFactory;
   private final AppContext appContext;
   private final MavenLocalizationConstant localization;
+  private final Set<MavenGeneratorPage> generatorPages;
 
   @Inject
   public MavenPagePresenter(
       MavenPageView view,
       DialogFactory dialogFactory,
       AppContext appContext,
-      MavenLocalizationConstant localization) {
+      MavenLocalizationConstant localization,
+      Set<MavenGeneratorPage> generatorPages) {
     super();
+
     this.view = view;
     this.dialogFactory = dialogFactory;
     this.appContext = appContext;
     this.localization = localization;
+    this.generatorPages = generatorPages;
+
     view.setDelegate(this);
   }
 
@@ -92,9 +92,18 @@ public class MavenPagePresenter extends AbstractWizardPage<MutableProjectConfig>
       setAttribute(PACKAGING, DEFAULT_PACKAGING);
       setAttribute(SOURCE_FOLDER, DEFAULT_SOURCE_FOLDER);
       setAttribute(TEST_SOURCE_FOLDER, DEFAULT_TEST_SOURCE_FOLDER);
+
+      // populate the generators list
+      List<String> generatorsList = new ArrayList<>();
+      for (MavenGeneratorPage page : generatorPages) {
+        generatorsList.add(page.getGeneratorId());
+      }
+      view.setGenerators(generatorsList);
     } else if (UPDATE == wizardMode && getAttribute(ARTIFACT_ID).isEmpty()) {
       estimateAndSetAttributes();
     }
+
+    view.setGeneratorsListVisibility(CREATE == wizardMode);
   }
 
   private void estimateAndSetAttributes() {
@@ -214,9 +223,12 @@ public class MavenPagePresenter extends AbstractWizardPage<MutableProjectConfig>
 
     updateView();
     validateCoordinates();
+  }
 
-    view.setArchetypeSectionVisibility(CREATE == wizardMode);
-    view.enableArchetypes(view.isGenerateFromArchetypeSelected());
+  @Override
+  public void onGeneratorChanged(String id) {
+    dataObject.getOptions().put(GENERATOR_OPTION, id);
+    updateDelegate.updateControls();
   }
 
   /** Updates view from data-object. */
@@ -239,8 +251,6 @@ public class MavenPagePresenter extends AbstractWizardPage<MutableProjectConfig>
     } else {
       view.setVersion(getAttribute(PARENT_VERSION));
     }
-
-    view.setPackaging(getAttribute(PACKAGING));
   }
 
   @Override
@@ -249,46 +259,7 @@ public class MavenPagePresenter extends AbstractWizardPage<MutableProjectConfig>
     setAttribute(GROUP_ID, view.getGroupId());
     setAttribute(VERSION, view.getVersion());
 
-    packagingChanged(view.getPackaging());
     validateCoordinates();
-    updateDelegate.updateControls();
-  }
-
-  @Override
-  public void packagingChanged(String packaging) {
-    Map<String, List<String>> attributes = dataObject.getAttributes();
-    attributes.put(PACKAGING, Arrays.asList(packaging));
-    if ("pom".equals(packaging)) {
-      attributes.remove(SOURCE_FOLDER);
-      attributes.remove(TEST_SOURCE_FOLDER);
-    } else {
-      attributes.put(SOURCE_FOLDER, Arrays.asList(DEFAULT_SOURCE_FOLDER));
-      attributes.put(TEST_SOURCE_FOLDER, Arrays.asList(DEFAULT_TEST_SOURCE_FOLDER));
-    }
-
-    updateDelegate.updateControls();
-  }
-
-  @Override
-  public void generateFromArchetypeChanged(boolean isGenerateFromArchetype) {
-    view.setPackagingVisibility(!isGenerateFromArchetype);
-    view.enableArchetypes(isGenerateFromArchetype);
-    if (!isGenerateFromArchetype) {
-      view.clearArchetypes();
-    } else {
-      view.setArchetypes(MavenExtension.getAvailableArchetypes());
-    }
-    archetypeChanged(MavenExtension.getAvailableArchetypes().get(0));
-    updateDelegate.updateControls();
-  }
-
-  @Override
-  public void archetypeChanged(MavenArchetype archetype) {
-    dataObject.getOptions().put("type", "archetype");
-    dataObject.getOptions().put(ARCHETYPE_GROUP_ID_OPTION, archetype.getGroupId());
-    dataObject.getOptions().put(ARCHETYPE_ARTIFACT_ID_OPTION, archetype.getArtifactId());
-    dataObject.getOptions().put(ARCHETYPE_VERSION_OPTION, archetype.getVersion());
-    dataObject.getOptions().put(ARCHETYPE_REPOSITORY_OPTION, archetype.getRepository());
     updateDelegate.updateControls();
   }
 
@@ -299,7 +270,6 @@ public class MavenPagePresenter extends AbstractWizardPage<MutableProjectConfig>
   }
 
   /** Reads single value of attribute from data-object. */
-  @NotNull
   private String getAttribute(String attrId) {
     Map<String, List<String>> attributes = dataObject.getAttributes();
     List<String> values = attributes.get(attrId);

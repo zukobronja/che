@@ -15,8 +15,7 @@ public interface MavenAttributes {
   String MAVEN_ID = "maven";
   String MAVEN_NAME = "Maven";
 
-  String GENERATION_STRATEGY_OPTION = "type";
-
+  String GENERATOR_OPTION = "generator";
   String SIMPLE_GENERATION_STRATEGY = "simple";
   String ARCHETYPE_GENERATION_STRATEGY = "archetype";
 

@@ -13,18 +13,10 @@ package org.eclipse.che.plugin.maven.client.wizard;
 import com.google.inject.ImplementedBy;
 import java.util.List;
 import org.eclipse.che.ide.api.mvp.View;
-import org.eclipse.che.plugin.maven.client.MavenArchetype;
 
 /** @author Evgen Vidolob */
 @ImplementedBy(MavenPageViewImpl.class)
 public interface MavenPageView extends View<MavenPageView.ActionDelegate> {
-  String getPackaging();
-
-  void setPackaging(String packaging);
-
-  MavenArchetype getArchetype();
-
-  void setArchetypes(List<MavenArchetype> archetypes);
 
   String getGroupId();
 
@@ -38,29 +30,19 @@ public interface MavenPageView extends View<MavenPageView.ActionDelegate> {
 
   void setVersion(String value);
 
-  void setPackagingVisibility(boolean visible);
-
-  void setArchetypeSectionVisibility(boolean visible);
-
-  void enableArchetypes(boolean enabled);
-
-  boolean isGenerateFromArchetypeSelected();
-
   void showArtifactIdMissingIndicator(boolean doShow);
 
   void showGroupIdMissingIndicator(boolean doShow);
 
   void showVersionMissingIndicator(boolean doShow);
 
-  void clearArchetypes();
+  void setGenerators(List<String> generators);
 
-  public interface ActionDelegate {
+  void setGeneratorsListVisibility(boolean visible);
+
+  interface ActionDelegate {
     void onCoordinatesChanged();
 
-    void packagingChanged(String packaging);
-
-    void generateFromArchetypeChanged(boolean isGenerateFromArchetype);
-
-    void archetypeChanged(MavenArchetype archetype);
+    void onGeneratorChanged(String generatorId);
   }
 }

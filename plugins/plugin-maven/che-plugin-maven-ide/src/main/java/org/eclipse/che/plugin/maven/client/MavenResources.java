@@ -36,5 +36,9 @@ public interface MavenResources extends ClientBundle {
     String downloadLink();
 
     String editorMessage();
+
+    String label();
+
+    String field();
   }
 }

@@ -24,7 +24,14 @@ import org.eclipse.che.plugin.maven.client.project.ResolvingMavenProjectStateHol
 import org.eclipse.che.plugin.maven.client.resource.MavenProjectInterceptor;
 import org.eclipse.che.plugin.maven.client.resource.MavenSourceFolderInterceptor;
 import org.eclipse.che.plugin.maven.client.resource.PomInterceptor;
+import org.eclipse.che.plugin.maven.client.wizard.ArchetypeGeneratorPage;
+import org.eclipse.che.plugin.maven.client.wizard.ArchetypeGeneratorPageView;
+import org.eclipse.che.plugin.maven.client.wizard.ArchetypeGeneratorPageViewImpl;
+import org.eclipse.che.plugin.maven.client.wizard.MavenGeneratorPage;
 import org.eclipse.che.plugin.maven.client.wizard.MavenProjectWizardRegistrar;
+import org.eclipse.che.plugin.maven.client.wizard.SimpleGeneratorPage;
+import org.eclipse.che.plugin.maven.client.wizard.SimpleGeneratorPageView;
+import org.eclipse.che.plugin.maven.client.wizard.SimpleGeneratorPageViewImpl;
 
 /**
  * GIN module for Maven extension.
@@ -41,9 +48,17 @@ public class MavenGinModule extends AbstractGinModule {
         .addBinding()
         .to(MavenProjectWizardRegistrar.class);
 
+    bind(SimpleGeneratorPageView.class).to(SimpleGeneratorPageViewImpl.class);
+    bind(ArchetypeGeneratorPageView.class).to(ArchetypeGeneratorPageViewImpl.class);
+
     GinMultibinder.newSetBinder(binder(), CommandType.class)
         .addBinding()
         .to(MavenCommandType.class);
+
+    GinMultibinder<MavenGeneratorPage> generatorPagesMultibinder =
+        GinMultibinder.newSetBinder(binder(), MavenGeneratorPage.class);
+    generatorPagesMultibinder.addBinding().to(SimpleGeneratorPage.class);
+    generatorPagesMultibinder.addBinding().to(ArchetypeGeneratorPage.class);
 
     GinMultibinder.newSetBinder(binder(), PreferencePagePresenter.class)
         .addBinding()

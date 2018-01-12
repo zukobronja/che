@@ -16,6 +16,7 @@ import static org.eclipse.che.plugin.maven.shared.MavenAttributes.MAVEN_ID;
 import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.ide.api.project.MutableProjectConfig;
 import org.eclipse.che.ide.api.project.type.wizard.ProjectWizardRegistrar;
@@ -30,9 +31,11 @@ public class MavenProjectWizardRegistrar implements ProjectWizardRegistrar {
   private final List<WizardPage<MutableProjectConfig>> wizardPages;
 
   @Inject
-  public MavenProjectWizardRegistrar(MavenPagePresenter mavenPagePresenter) {
+  public MavenProjectWizardRegistrar(
+      MavenPagePresenter mavenPagePresenter, Set<MavenGeneratorPage> generatorPages) {
     wizardPages = new ArrayList<>();
     wizardPages.add(mavenPagePresenter);
+    wizardPages.addAll(generatorPages);
   }
 
   @NotNull

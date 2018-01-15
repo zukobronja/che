@@ -10,6 +10,8 @@
  */
 package org.eclipse.che.ide.ui.dialogs.input;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import javax.validation.constraints.NotNull;
@@ -95,6 +97,42 @@ public class InputDialogPresenter implements InputDialog, InputDialogView.Action
     this.cancelCallback = cancelCallback;
     this.view.setDelegate(this);
     this.localizationConstant = localizationConstant;
+  }
+
+  @AssistedInject
+  public InputDialogPresenter(
+      final @NotNull InputDialogView view,
+      final @NotNull @Assisted("title") String title,
+      final @NotNull @Assisted("label") String label,
+      final @NotNull @Assisted("initialValue") String initialValue,
+      final @NotNull @Assisted("selectionStartIndex") Integer selectionStartIndex,
+      final @NotNull @Assisted("selectionLength") Integer selectionLength,
+      final @NotNull @Assisted("okButtonLabel") String okButtonLabel,
+      final @NotNull @Assisted("cancelButtonLabel") String cancelButtonLabel,
+      final @Nullable @Assisted InputCallback inputCallback,
+      final @Nullable @Assisted CancelCallback cancelCallback,
+      final UILocalizationConstant localizationConstant) {
+    this.view = view;
+    this.view.setContent(label);
+    this.view.setTitle(title);
+    this.view.setSelectionStartIndex(selectionStartIndex);
+    this.view.setSelectionLength(selectionLength);
+    this.inputCallback = inputCallback;
+    this.cancelCallback = cancelCallback;
+    this.view.setDelegate(this);
+    this.localizationConstant = localizationConstant;
+
+    if (!isNullOrEmpty(initialValue)) {
+      view.setValue(initialValue);
+    }
+
+    if (!isNullOrEmpty(okButtonLabel)) {
+      view.setOkButtonLabel(okButtonLabel);
+    }
+
+    if (!isNullOrEmpty(cancelButtonLabel)) {
+      view.setCancelButtonLabel(cancelButtonLabel);
+    }
   }
 
   @Override

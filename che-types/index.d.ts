@@ -13,6 +13,7 @@ declare interface CheApi {
     actionManager: ActionManager;
     partManager: PartManager;
     editorManager: EditorManager;
+    dialogManager: che.ide.dialogs.DialogManager;
     appContext: AppContext;
     eventBus: EventBus;
 }
@@ -1911,6 +1912,110 @@ declare namespace che {
                     getMachineName(): string;
                 }
 
+            }
+        }
+        namespace dialogs {
+            interface DialogManager {
+
+                /**
+                 * Shows a Message dialog.
+                 * A dialog consists of a title, main part with text as content and confirmation button.
+                 * Confirmation button text is 'OK' by default, can be overridden.
+                 *
+                 * @param dialogData the information necessary to create a Message dialog window
+                 * @param confirmButtonClickedHandler the handler is used when user clicks on confirmation button
+                 */
+                showMessageDialog(dialogData: MessageDialogData, confirmButtonClickedHandler: ClickButtonHandler): void;
+
+                /**
+                 * Shows a Confirmation dialog.
+                 * A dialog consists of a title, main part with text as content, confirmation and cancel buttons.
+                 * Confirmation button text is 'OK' by default.
+                 * Cancel button text is 'Cancel' by default.
+                 * Text for confirmation and cancel buttons can be overridden.
+                 *
+                 * @param dialogData the information necessary to create a Confirmation dialog window
+                 * @param confirmButtonClickedHandler the handler is used when user clicks on confirmation button
+                 * @param cancelButtonClickedHandler the handler is used when user clicks on cancel button
+                 */
+                showConfirmDialog(dialogData: ConfirmDialogData, confirmButtonClickedHandler: ClickButtonHandler, cancelButtonClickedHandler: ClickButtonHandler): void;
+
+                /**
+                 * Shows an input dialog.
+                 * A dialog consists of a title, main part with input field and label for it, confirmation and cancel buttons.
+                 * Input field can contains an initial text. The initial text may be pre-selected.
+                 * Confirmation button text is 'OK' by default.
+                 * Cancel button text is 'Cancel' by default.
+                 * Text for confirmation and cancel buttons can be overridden.
+                 *
+                 * @param dialogData the information necessary to create an input dialog window
+                 * @param inputAcceptedHandler the handler is used when user clicks on confirmation button
+                 * @param cancelButtonClickedHandler the handler is used when user clicks on cancel button
+                 */
+                showInputDialog(dialogData: InputDialogData, inputAcceptedHandler: { (value: string): void }, cancelButtonClickedHandler: ClickButtonHandler): void;
+
+                /**
+                 * Shows a Choice dialog.
+                 * A dialog consists of a title, main part with text as content and three buttons to confirm some choice.
+                 *
+                 * @param dialogData the information necessary to create a Choice dialog window
+                 * @param firstButtonClickedHandler the handler is used when user clicks on first button on the right
+                 * @param secondButtonClickedHandler the handler is used when user clicks on second button on the right
+                 * @param thirdButtonClickedHandler the handler is used when user clicks on third button on the right
+                 */
+                showChoiceDialog(dialogData: ChoiceDialogData, firstButtonClickedHandler: ClickButtonHandler, secondButtonClickedHandler: ClickButtonHandler, thirdButtonClickedHandler: ClickButtonHandler): void;
+            }
+
+            /** Container for the information necessary to create a dialog window */
+            interface DialogData {
+                /** Dialog title. */
+                title: string;
+
+                /** Content for displaying. */
+                content: string;
+            }
+
+            /** Container for the information necessary to create a message dialog window */
+            interface MessageDialogData extends DialogData {
+                /** Confirm button text. Confirmation button named 'OK' by default */
+                confirmButtonText: string;
+            }
+
+            /** Container for the information necessary to create a confirmation dialog window */
+            interface ConfirmDialogData extends MessageDialogData {
+                /** Cancel button text. Cancel button named 'Cancel' by default */
+                cancelButtonText: string;
+            }
+
+            /** Container for the information necessary to create an input dialog window with the specified initial text. */
+            interface InputDialogData extends ConfirmDialogData {
+                /** Text used to initialize the input. The {@code initialText} may be pre-selected.
+                 * Selection begins at the specified {@code selectionStartIndex} and extends to the character at index {@code selectionLength}.
+                 */
+                initialText: string;
+
+                /** Beginning index of the initial text to select, inclusive. */
+                selectionStartIndex: number;
+
+                /** Number of characters to be selected in the input. */
+                selectionLength: number;
+            }
+
+            /** Container for the information necessary to create a choice dialog window */
+            interface ChoiceDialogData extends DialogData {
+                /** Text for displaying by first choice button. */
+                firstChoiceButtonText: string;
+
+                /** Text for displaying by second choice button */
+                secondChoiceButtonText: string;
+
+                /** Text for displaying by third choice button. */
+                thirdChoiceButtonText: string;
+            }
+
+            /** Used when the user clicks on some button. */
+            interface ClickButtonHandler {
+                (): void;
             }
         }
     }

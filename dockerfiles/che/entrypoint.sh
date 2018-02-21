@@ -349,6 +349,13 @@ init
 init_global_variables
 set_environment_variables
 
+CHE_OPENSHIFT_CERT_LOCATION=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+if ${CHE_INFRASTRUCTURE_ACTIVE} = "openshift"; then
+    if [ -f /var/run/secrets/kubernetes.io/serviceaccount/ca.crt ] && [ -f ${JAVA_HOME}/lib/security/cacerts ]; then
+        keytool -import -file ${CHE_OPENSHIFT_CERT_LOCATION} -storepass changeit -keystore ${JAVA_HOME}/lib/security/cacerts -alias ocpcert
+    fi
+fi
+
 # run che
 start_che_server &
 

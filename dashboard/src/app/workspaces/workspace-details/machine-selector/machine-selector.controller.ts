@@ -74,6 +74,10 @@ export class MachineSelectorController {
    * Callback which is called for check workspaceDetails changes.
    */
   private onChange: Function;
+  /**
+   * Filter function.
+   */
+  private filter: Function;
 
   /**
    * Default constructor that is using resource injection.
@@ -121,10 +125,21 @@ export class MachineSelectorController {
     this.machines.length = 0;
     this.machinesList.length = 0;
 
-    const machines = this.environmentManager.getMachines(this.environment, workspaceDetails.runtime);
+    let machines = this.environmentManager.getMachines(this.environment, workspaceDetails.runtime);
     if (!angular.isArray(machines) || machines.length === 0) {
       return;
     }
+
+    if (this.filter) {
+      machines = machines.filter((machine: IEnvironmentManagerMachine) => {
+        return this.filter(machine);
+      });
+    }
+
+    if (machines.length === 0) {
+      return;
+    }
+
     machines.forEach((machine: IEnvironmentManagerMachine) => {
       const isDev = this.environmentManager.isDev(machine);
       if (isDev && !this.selectedMachine) {
@@ -136,6 +151,7 @@ export class MachineSelectorController {
         isDev: isDev
       });
     });
+
     this.updateData(this.selectedMachine ? this.selectedMachine.name : machines[0].name);
   }
 

@@ -10,7 +10,7 @@
  */
 package org.eclipse.che.multiuser.machine.authentication.agent;
 
-import static org.mockito.ArgumentMatchers.any;
+import static com.google.inject.matcher.Matchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
@@ -64,8 +64,7 @@ public class MachineLoginFilterTest {
   @BeforeMethod
   public void setUp() throws Exception {
     requestTokenExtractor = new HeaderRequestTokenExtractor();
-    machineLoginFilter =
-        new MachineLoginFilter(API_ENDPOINT, requestFactoryMock, requestTokenExtractor);
+    machineLoginFilter = new MachineLoginFilter();
     httpJsonRequestMock = mock(HttpJsonRequest.class, new SelfReturningAnswer());
     EnvironmentContext.reset();
     when(requestFactoryMock.fromUrl(anyString())).thenReturn(httpJsonRequestMock);

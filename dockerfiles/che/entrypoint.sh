@@ -266,7 +266,7 @@ init() {
 
   # Move files from /lib to /lib-copy.  This puts files onto the host.
   rm -rf ${CHE_DATA}/lib/*
-  mkdir -p ${CHE_DATA}/lib  
+  mkdir -p ${CHE_DATA}/lib
   cp -rf ${CHE_HOME}/lib/* "${CHE_DATA}"/lib
 
   # Cleanup no longer in use stacks folder, accordance to a new loading policy.
@@ -349,10 +349,17 @@ init
 init_global_variables
 set_environment_variables
 
+CHE_INFRASTRUCTURE_ACTIVE=openshift
 CHE_OPENSHIFT_CERT_LOCATION=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-if ${CHE_INFRASTRUCTURE_ACTIVE} = "openshift"; then
-    if [ -f /var/run/secrets/kubernetes.io/serviceaccount/ca.crt ] && [ -f ${JAVA_HOME}/lib/security/cacerts ]; then
-        keytool -import -file ${CHE_OPENSHIFT_CERT_LOCATION} -storepass changeit -keystore ${JAVA_HOME}/lib/security/cacerts -alias ocpcert
+CHE_OPENSHIFT_SERVICE_CERT_LOCATION=/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
+CHE_OPENSHIFT_SIGNER_CERT_LOCATION=/tmp/service-signer.crt
+CHE_JAVA_CERT_LOCATION=/etc/ssl/certs/java/cacerts
+tail -$(($(grep -c "^" ${CHE_OPENSHIFT_SERVICE_CERT_LOCATION})-$(grep -c "^" ${CHE_OPENSHIFT_CERT_LOCATION})-1)) ${CHE_OPENSHIFT_SERVICE_CERT_LOCATION} > ${CHE_OPENSHIFT_SIGNER_CERT_LOCATION}
+if [ "${CHE_INFRASTRUCTURE_ACTIVE}" = "openshift" ]; then
+    if [ -f ${CHE_OPENSHIFT_SIGNER_CERT_LOCATION} ] && [ -f ${CHE_JAVA_CERT_LOCATION} ]; then
+        chmod a+w ${CHE_JAVA_CERT_LOCATION}
+        keytool -importcert -noprompt -file ${CHE_OPENSHIFT_SIGNER_CERT_LOCATION} -storepass changeit -keystore ${CHE_JAVA_CERT_LOCATION} -alias openshiftcert
+        chmod a-w ${CHE_JAVA_CERT_LOCATION}
     fi
 fi
 

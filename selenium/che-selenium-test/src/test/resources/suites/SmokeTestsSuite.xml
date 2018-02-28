@@ -22,6 +22,8 @@
             <class name="org.eclipse.che.selenium.git.GitPullConflictTest"/>
             <class name="org.eclipse.che.selenium.git.CreateAndDeleteLocalBranchTest"/>
             <class name="org.eclipse.che.selenium.git.SetGitCommitterTest"/>
+            <class name="org.eclipse.che.selenium.git.PushingChangesTest"/>
+            <class name="org.eclipse.che.selenium.git.PushChangeNotUpdatedRepoTest"/>
         </classes>
     </test>
 </suite>

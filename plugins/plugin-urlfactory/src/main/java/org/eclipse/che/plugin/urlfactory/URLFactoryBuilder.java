@@ -11,7 +11,6 @@
 package org.eclipse.che.plugin.urlfactory;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static org.eclipse.che.api.core.model.workspace.config.MachineConfig.MEMORY_LIMIT_ATTRIBUTE;
 import static org.eclipse.che.dto.server.DtoFactory.newDto;
@@ -21,6 +20,7 @@ import com.google.common.io.CharStreams;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.eclipse.che.api.factory.shared.dto.FactoryDto;
@@ -106,9 +106,12 @@ public class URLFactoryBuilder {
     } else {
       recipeDto = newDto(RecipeDto.class).withContent(DEFAULT_DOCKER_IMAGE).withType("dockerimage");
     }
+
     MachineConfigDto machine =
         newDto(MachineConfigDto.class)
-            .withInstallers(singletonList("org.eclipse.che.ws-agent"))
+            .withInstallers(
+                Arrays.asList(
+                    "org.eclipse.che.exec", "org.eclipse.che.terminal", "org.eclipse.che.ws-agent"))
             .withAttributes(singletonMap(MEMORY_LIMIT_ATTRIBUTE, DEFAULT_MEMORY_LIMIT_BYTES));
 
     // setup environment

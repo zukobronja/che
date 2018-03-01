@@ -11,7 +11,7 @@
 package org.eclipse.che.plugin.urlfactory;
 
 import static java.lang.Boolean.FALSE;
-import static java.util.Collections.singletonList;
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
 import static org.eclipse.che.api.core.model.workspace.config.MachineConfig.MEMORY_LIMIT_ATTRIBUTE;
 import static org.eclipse.che.dto.server.DtoFactory.newDto;
@@ -59,7 +59,9 @@ public class URLFactoryBuilderTest {
         newDto(RecipeDto.class).withContent(DEFAULT_DOCKER_IMAGE).withType("dockerimage");
     MachineConfigDto machine =
         newDto(MachineConfigDto.class)
-            .withInstallers(singletonList("org.eclipse.che.ws-agent"))
+            .withInstallers(
+                asList(
+                    "org.eclipse.che.exec", "org.eclipse.che.terminal", "org.eclipse.che.ws-agent"))
             .withAttributes(singletonMap(MEMORY_LIMIT_ATTRIBUTE, DEFAULT_MEMORY_LIMIT_BYTES));
 
     // setup environment
@@ -95,7 +97,9 @@ public class URLFactoryBuilderTest {
             .withContentType("text/x-dockerfile");
     MachineConfigDto machine =
         newDto(MachineConfigDto.class)
-            .withInstallers(singletonList("org.eclipse.che.ws-agent"))
+            .withInstallers(
+                asList(
+                    "org.eclipse.che.exec", "org.eclipse.che.terminal", "org.eclipse.che.ws-agent"))
             .withAttributes(singletonMap(MEMORY_LIMIT_ATTRIBUTE, DEFAULT_MEMORY_LIMIT_BYTES));
 
     // setup environment
@@ -129,7 +133,9 @@ public class URLFactoryBuilderTest {
         newDto(RecipeDto.class).withContent(DEFAULT_DOCKER_IMAGE).withType("dockerimage");
     MachineConfigDto machine =
         newDto(MachineConfigDto.class)
-            .withInstallers(singletonList("org.eclipse.che.ws-agent"))
+            .withInstallers(
+                asList(
+                    "org.eclipse.che.exec", "org.eclipse.che.terminal", "org.eclipse.che.ws-agent"))
             .withAttributes(singletonMap(MEMORY_LIMIT_ATTRIBUTE, DEFAULT_MEMORY_LIMIT_BYTES));
 
     // setup environment

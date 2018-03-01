@@ -23,6 +23,7 @@ const MAX_RECENT_WORKSPACES_ITEMS: number = 5;
  * @author Oleksii Kurinnyi
  */
 export class NavbarRecentWorkspacesController {
+  $q: ng.IQService;
   cheWorkspace: CheWorkspace;
   dropdownItemTempl: Array<any>;
   workspaces: Array<che.IWorkspace>;
@@ -43,6 +44,7 @@ export class NavbarRecentWorkspacesController {
    * @ngInject for Dependency injection
    */
   constructor(ideSvc: IdeSvc,
+              $q : ng.IQService,
               cheWorkspace: CheWorkspace,
               cheBranding: CheBranding,
               $window: ng.IWindowService,
@@ -53,6 +55,7 @@ export class NavbarRecentWorkspacesController {
     this.ideSvc = ideSvc;
     this.cheWorkspace = cheWorkspace;
     this.$log = $log;
+    this.$q = $q;
     this.$window = $window;
     this.$rootScope = $rootScope;
     this.workspaceCreationLink = cheBranding.getWorkspace().creationLink;
@@ -335,4 +338,6 @@ export class NavbarRecentWorkspacesController {
   updateRecentWorkspace(workspaceId: string): void {
     this.$rootScope.$broadcast('recent-workspace:set', workspaceId);
   }
+
+
 }
